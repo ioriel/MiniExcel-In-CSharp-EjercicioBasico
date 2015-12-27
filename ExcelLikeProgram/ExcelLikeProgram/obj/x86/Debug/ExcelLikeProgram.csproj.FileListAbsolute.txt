@@ -5,3 +5,11 @@ c:\users\rusbel\documents\visual studio 2010\Projects\ExcelLikeProgram\ExcelLike
 c:\users\rusbel\documents\visual studio 2010\Projects\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.csproj.GenerateResource.Cache
 c:\users\rusbel\documents\visual studio 2010\Projects\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.exe
 c:\users\rusbel\documents\visual studio 2010\Projects\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.pdb
+C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.exe
+C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.pdb
+C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\bin\Debug\ExcelLikeProgram.exe
+C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\bin\Debug\ExcelLikeProgram.pdb
+C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.Form1.resources
+C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.Properties.Resources.resources
+C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.csproj.GenerateResource.Cache
+C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.csprojResolveAssemblyReference.cache
