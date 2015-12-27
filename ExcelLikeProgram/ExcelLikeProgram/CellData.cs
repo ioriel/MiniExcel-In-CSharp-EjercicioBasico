@@ -11,13 +11,17 @@ namespace ExcelLikeProgram
         private string id; //id de celda
         public string Id { get { return this.id; } }
         private string name;
-        public string Name { get { return this.name; } }
-        private string currentValue; // valor actual
-        public string CurrentValue 
+        public string Name { get { return this.name; } } //nombre como formato A1 A2 ... etc;
+
+        private object currentValue; // valor actual
+        public object CurrentValue 
         {
             get { return this.currentValue; }
             set { this.currentValue = value; }
         }
+
+        private string currentFormula;
+        public string CurrentFormula { get { return this.currentFormula; } set { this.currentFormula = value; } }
         private bool bold;
         public bool IsBold { get { return this.bold; } set { this.bold = value; } }
         private bool sub;
@@ -32,9 +36,10 @@ namespace ExcelLikeProgram
         public int Y { get { return this.y; } set { this.y = value; } }
 
         //constructor de la clase
-        public CellData(string _cellId)
+        public CellData(string _cellId , string _cellName)
         {
             this.id = _cellId;
+            this.name = _cellName;
         }
 
     }
