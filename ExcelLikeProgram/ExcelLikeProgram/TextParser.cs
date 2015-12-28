@@ -120,10 +120,10 @@ namespace ExcelLikeProgram
 
             Regex regex = new Regex("[a-zA-Z]{1}[0-9]{1,3}"); //busca patrones de nombre de celda en la formula
 
-            MatchCollection replacables = regex.Matches(this.Input);
+            MatchCollection replaceables = regex.Matches(this.Input);
             string replacedWithValues="";
 
-            foreach (Match item in replacables)
+            foreach (Match item in replaceables)
             {
                 //string replacement = item.Value;
                 string cellKey = ConverCellNameToKey(item.Value);
@@ -137,8 +137,11 @@ namespace ExcelLikeProgram
                 replacedWithValues = regex.Replace(this.Input, replacement);
                 //buscar todos los valores de la formula
             }
-            this.input = replacedWithValues;
-            MessageBox.Show(replacedWithValues);
+            this.input = replacedWithValues;//cadena con vlaores de celdas
+
+            //regex 1 operacion binaria
+            //^[=]+[(]?[0-9.0-9]+[\+]?[\-]?[\*]?[\/]?[\^]?[0-9.0-9]+[)]?
+            //^[=]?[(]*[0-9.0-9]+[\+]?[\-]?[\*]?[\/]?[\^]?[0-9.0-9]+[)]*
             /*
             foreach (char val in _input)
             {

@@ -146,6 +146,7 @@ namespace ExcelLikeProgram
             TextParser parser = new TextParser(this.Cells);
 
             parser.Parse(this.textBox1.Text);
+            this.editingFormula = false;
             return null;
         }
 
