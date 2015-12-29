@@ -37,6 +37,8 @@ namespace ExcelLikeProgram
 
         private Dictionary<string, CellData> Cells = new Dictionary<string, CellData>();//key = rowIndex+ColIndex , value = CellData definida en otra clase para guardar varios datos de la celda
         private bool editingFormula;
+        private bool editingCell;
+        private bool autoUpdatingCellValue;
         private void InitDataGRid()
         {
             //inicializar Columnas
@@ -93,39 +95,50 @@ namespace ExcelLikeProgram
         }
 
         //metodo delegado de vento en control
+        private bool runOnce;//solo reistrara el evento una vez y no uno cada vez q se seleccione un control
         private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            e.Control.KeyPress += new KeyPressEventHandler(Control_KeyPress);
+            if (!this.runOnce)
+            {
+                e.Control.KeyPress += new KeyPressEventHandler(Control_KeyPress);
+                this.runOnce = true;
+            }
+               
         }
 
         //metodo delegado de evento de presion de tecla se ejecuta al pulsar una tecla al tener activada una celda en modo edicion
         private void Control_KeyPress(object sender, KeyPressEventArgs e)
         {
-            int column = dataGridView1.CurrentCellAddress.X;
-            int row = dataGridView1.CurrentCellAddress.Y;
-
-            if (e.KeyChar == '=' && !this.editingFormula)
+            if (!this.autoUpdatingCellValue && this.editingCell)
             {
-                this.editingFormula = true;
+                int column = dataGridView1.CurrentCellAddress.X;
+                int row = dataGridView1.CurrentCellAddress.Y;
+                //if (e.KeyChar == '=' && !this.editingFormula)
+                //{
+                //    this.editingFormula = true;
+                //}
+                //if (this.dataGridView1.Rows[row].Cells[column].Value != null)
+                //    this.textBox1.Text = this.dataGridView1.Rows[row].Cells[column].Value.ToString();
+
+
+                if (!char.IsControl(e.KeyChar)/*&& (char.IsLetterOrDigit(e.KeyChar) || e.KeyChar == '+' || e.KeyChar == '-' || e.KeyChar == '/' || e.KeyChar == '*' || e.KeyChar == '^' || e.KeyChar == '(' || e.KeyChar == ')')*/)
+                {
+
+                //    string cellValue = Char.ToString(e.KeyChar);
+                //    //Get the column and row position of the selected cell
+                    this.textBox1.Text += char.ToString(e.KeyChar); // agregamos el vlaor del char al textbox
+
+                //    //this.dataGridView1.Rows[row].Cells[column].Style.BackColor = Color.Red;
+                //    this.textBox1.Text += char.ToString(e.KeyChar); // agregamos el vlaor del char al textbox
+                }
+                else if (e.KeyChar == 8)
+                {
+
+                    this.textBox1.Text = this.textBox1.Text.Substring(0, this.textBox1.Text.Length - 1);
+
+                }
             }
 
-
-            if (this.editingFormula && !char.IsControl(e.KeyChar)/*&& (char.IsLetterOrDigit(e.KeyChar) || e.KeyChar == '+' || e.KeyChar == '-' || e.KeyChar == '/' || e.KeyChar == '*' || e.KeyChar == '^' || e.KeyChar == '(' || e.KeyChar == ')')*/)
-            {
-
-                string cellValue = Char.ToString(e.KeyChar);
-                //Get the column and row position of the selected cell
-               
-
-                //this.dataGridView1.Rows[row].Cells[column].Style.BackColor = Color.Red;
-                this.textBox1.Text += char.ToString(e.KeyChar); // agregamos el vlaor del char al textbox
-            }
-            else if(e.KeyChar == 157)
-            {
-                if (this.dataGridView1.Rows[row].Cells[column].Value != null)
-                    this.textBox1.Text = this.dataGridView1.Rows[row].Cells[column].Value.ToString();
-
-            }
         }
         
         
@@ -155,13 +168,21 @@ namespace ExcelLikeProgram
         }
 
         //analiza y obtiene un resultado de la formula/operacion recibida
-        private object ParseFormula( string _formula)
+        private double ParseFormula( string _formula)
         {
+            
+            double resultado = 0;
             TextParser parser = new TextParser(this.Cells);
 
-            parser.Parse(this.textBox1.Text);
+            if (parser.Parse(this.textBox1.Text))
+            {
+                resultado = parser.Result;
+            }
+            else
+                MessageBox.Show("No se pudo analizar la formula Proporcionada");
+
             this.editingFormula = false;
-            return null;
+            return resultado;
         }
 
         //se ejecuta al terminar de editar una celda o salir de modo edicion
@@ -169,7 +190,7 @@ namespace ExcelLikeProgram
         {
             //int rowIndex =  e.RowIndex; //utilizar + 1 para localizar el dato
            // int colindex = e.ColumnIndex;
-            
+            this.autoUpdatingCellValue = true;
             //guardar el valor actual de la celda
             string currCellId = this.GetCellKey(e.RowIndex, e.ColumnIndex);
             object currCellValue = this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
@@ -201,7 +222,12 @@ namespace ExcelLikeProgram
                 //this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.Blue;
             }
 
+            double res = this.ParseFormula(myCell.CurrentFormula);
+            myCell.CurrentValue = res;
             this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = myCell.CurrentValue ;
+
+            this.autoUpdatingCellValue = false;
+            this.editingCell = false;
         }
 
         //metodo para ejecucion de operacion en rango de columnas
@@ -224,6 +250,10 @@ namespace ExcelLikeProgram
                 this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = (object)myCell.CurrentFormula;
                 this.textBox1.Text = myCell.CurrentFormula;
             }
+
+            this.editingCell = true;
+            this.autoUpdatingCellValue = false;
+
         }
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -233,8 +263,10 @@ namespace ExcelLikeProgram
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+
             if (e.RowIndex > 0 && e.ColumnIndex > 0)
             {
+                this.textBox1.Clear();
                 if (this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
                 {
                     object val = this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
@@ -262,26 +294,29 @@ namespace ExcelLikeProgram
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             
-            int col = this.dataGridView1.CurrentCellAddress.X;
-            int row = this.dataGridView1.CurrentCellAddress.Y;
-            string cellId = this.GetCellKey(row, col);
-            CellData myCell = this.Cells[cellId];
-
-            
-
-            if (myCell.CurrentValue == null)
+            if (!this.editingCell)
             {
-                myCell.CurrentValue = e.KeyChar;
-            }
-            else
-            {
-                string currVal = myCell.CurrentValue.ToString() + char.ToString(e.KeyChar);
-                myCell.CurrentValue = currVal;
-                this.dataGridView1.Rows[row].Cells[col].Value = myCell.CurrentValue;
+                int col = this.dataGridView1.CurrentCellAddress.X;
+                int row = this.dataGridView1.CurrentCellAddress.Y;
+                string cellId = this.GetCellKey(row, col);
+                CellData myCell = this.Cells[cellId];
+                if (myCell.CurrentValue == null)
+                {
+                    if(e.KeyChar!= 8)
+                        myCell.CurrentValue = e.KeyChar;
+                }
+                else
+                {
+                    if (e.KeyChar != 8)
+                    {
+                        string currVal = myCell.CurrentValue.ToString() + char.ToString(e.KeyChar);
+                        myCell.CurrentValue = currVal;
+                        this.dataGridView1.Rows[row].Cells[col].Value = myCell.CurrentValue;
+                    }
+                    
+                }
             }
 
-            
-           
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -495,6 +530,43 @@ namespace ExcelLikeProgram
         }
 
         #endregion
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (this.colorDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                Color color = this.colorDialog1.Color;
+
+                foreach (DataGridViewCell cell in this.dataGridView1.SelectedCells)
+                {
+                    cell.Style.BackColor = color;
+                }
+            }
+        }
+
+        private void btnCentrar_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewCell cell in this.dataGridView1.SelectedCells)
+            {
+                cell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewCell cell in this.dataGridView1.SelectedCells)
+            {
+                cell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewCell cell in this.dataGridView1.SelectedCells)
+            {
+                cell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+        }
 
 
 

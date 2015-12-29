@@ -54,6 +54,7 @@ namespace ExcelLikeProgram
     class TextParser
     {
         public delegate void EventHandlerOnTextChange( object _sender , string _input);
+        private enum Operaciones{Suma , Resta ,Multiplica ,Divide ,Potencia , Undef};
 
         public EventHandlerOnTextChange OnTextChange;
         
@@ -78,6 +79,9 @@ namespace ExcelLikeProgram
             } 
         }
 
+        private double result;
+        public double Result { get { return this.result; } }
+
         //constructor
         public TextParser(Dictionary<string, CellData> _cells)
         {
@@ -94,6 +98,67 @@ namespace ExcelLikeProgram
             int valColId = Convert.ToChar(ColId)-65;
             int valRowId = int.Parse(rowId)-1;
             return valRowId.ToString()+";"+valColId.ToString() ;
+        }
+
+
+        private double Eval(double _expA, double _expB, Operaciones _operacion)
+        {
+            double result = 0.0;
+
+            switch (_operacion)
+            {
+                case Operaciones.Suma:
+                    result = _expA + _expB;
+                    break;
+                case Operaciones.Resta:
+                    result = _expA - _expB;
+                    break;
+                case Operaciones.Multiplica:
+                    result = _expA * _expB;
+                    break;
+                case Operaciones.Divide:
+                    if (_expB != 0)
+                        result = _expA / _expB;
+                    else
+                        MessageBox.Show("No se puede dividir entre 0");
+                    break;
+                case Operaciones.Potencia:
+                    result = Math.Pow(_expA , _expB);
+                    break;
+                case Operaciones.Undef:
+                    break;
+                default:
+                    break;
+            }
+
+            return result;
+        }
+
+
+        private Operaciones GetOperation(string _operator)
+        {
+            Operaciones operacion = Operaciones.Undef;
+            switch (_operator)
+            {
+                case "+":
+                    operacion = Operaciones.Suma;
+                    break;
+                case "-":
+                    operacion = Operaciones.Resta;
+                    break;
+                case "/":
+                    operacion = Operaciones.Divide;
+                    break;
+                case "*":
+                    operacion = Operaciones.Multiplica;
+                    break;
+                case "^":
+                    operacion = Operaciones.Potencia;
+                    break;
+                default:
+                    break;
+            }
+            return operacion;
         }
 
         //analiza la formula
@@ -137,10 +202,44 @@ namespace ExcelLikeProgram
                 replacedWithValues = regex.Replace(this.Input, replacement);
                 //buscar todos los valores de la formula
             }
-            this.input = replacedWithValues;//cadena con vlaores de celdas
+            if(replaceables.Count > 0)
+                this.input = replacedWithValues;//cadena con vlaores de celdas
 
             //regex 1 operacion binaria
             //^[=]+[(]?[0-9.0-9]+[\+]?[\-]?[\*]?[\/]?[\^]?[0-9.0-9]+[)]?
+            //verificar si tiene forma de operacion
+            Regex regOperacionBinaria = new Regex(@"^[=]+[(]?[0-9.0-9]+[\+]?[\-]?[\*]?[\/]?[\^]?[0-9.0-9]+[)]?");
+            //->>> ojo no reconoce numeros negativos ... falta implementar
+            if (regOperacionBinaria.IsMatch(this.Input))
+            {
+                //analiza 2 expresiones y un operador
+                MatchCollection operandos = Regex.Matches(this.Input, @"[0-9.0-9]+");
+                //Match operador = Regex.Match(this.Input, @"[\+]?[\-]?[\*]?[\/]?[\^]");//[\+]{0,1}[\-]{0,1}[\*]{0,1}[\/]{0,1}
+                Match operador = Regex.Match(this.Input, @"[+]*[-]*[*]*[/]*");
+                double operandoA;
+                double operandoB;
+
+                if (operandos.Count == 2)
+                {
+                    operandoA = Double.Parse(operandos[0].Value);
+                    operandoB = Double.Parse(operandos[1].Value);
+
+                    MessageBox.Show(operador.Value);
+                    if (operador.Length > 0)
+                    {
+                        this.result = this.Eval(operandoA, operandoB, GetOperation(operador.Value));
+                        flag = true;
+                        
+                    }
+                    else
+                        MessageBox.Show("No hay operador");
+                }
+                else
+                    MessageBox.Show("numero incorrecto de oepradores");
+            }
+            else
+                MessageBox.Show("La operacion Solicitada no puede ser concretada");
+
             //^[=]?[(]*[0-9.0-9]+[\+]?[\-]?[\*]?[\/]?[\^]?[0-9.0-9]+[)]*
             /*
             foreach (char val in _input)
@@ -157,17 +256,16 @@ namespace ExcelLikeProgram
                 }
             }
             */
+
+
+
+
             //si no hay niveles de jerarquia analizar operadores
 
             return flag;
         }
 
-        
-        //ejecuta la formula
-        public void Evaluate()
-        { 
-        
-        }
+      
 
         private int GetOperatorPrecedence(String token)
         {
