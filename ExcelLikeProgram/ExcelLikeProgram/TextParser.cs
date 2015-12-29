@@ -161,6 +161,21 @@ namespace ExcelLikeProgram
             return operacion;
         }
 
+
+        private string PeekOperator(string _input)
+        { 
+            string operador = "null";
+
+            foreach (char ch in _input)
+            {
+                if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^')
+                {
+                    operador = ch.ToString();
+                }
+            }
+
+            return operador;
+        }
         //analiza la formula
         public bool Parse(string _input)
         {
@@ -215,7 +230,8 @@ namespace ExcelLikeProgram
                 //analiza 2 expresiones y un operador
                 MatchCollection operandos = Regex.Matches(this.Input, @"[0-9.0-9]+");
                 //Match operador = Regex.Match(this.Input, @"[\+]?[\-]?[\*]?[\/]?[\^]");//[\+]{0,1}[\-]{0,1}[\*]{0,1}[\/]{0,1}
-                Match operador = Regex.Match(this.Input, @"[+]*[-]*[*]*[/]*");
+                //Match operador = Regex.Match(this.Input, @"[+]*[-]*[*]*[/]*");
+                string operador = this.PeekOperator(this.input);
                 double operandoA;
                 double operandoB;
 
@@ -224,12 +240,11 @@ namespace ExcelLikeProgram
                     operandoA = Double.Parse(operandos[0].Value);
                     operandoB = Double.Parse(operandos[1].Value);
 
-                    MessageBox.Show(operador.Value);
+                    //MessageBox.Show(operador);
                     if (operador.Length > 0)
                     {
-                        this.result = this.Eval(operandoA, operandoB, GetOperation(operador.Value));
+                        this.result = this.Eval(operandoA, operandoB, GetOperation(operador));
                         flag = true;
-                        
                     }
                     else
                         MessageBox.Show("No hay operador");

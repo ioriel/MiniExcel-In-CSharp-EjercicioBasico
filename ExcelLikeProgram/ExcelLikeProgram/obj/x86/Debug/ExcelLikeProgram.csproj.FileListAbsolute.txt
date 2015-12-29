@@ -12,3 +12,4 @@ C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikePr
 C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.Form1.resources
 C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.Properties.Resources.resources
 C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.csproj.GenerateResource.Cache
+C:\Users\Rusbel\Documents\GitHub\MiniExcel-In-CSharp-EjercicioBasico\ExcelLikeProgram\ExcelLikeProgram\obj\x86\Debug\ExcelLikeProgram.csprojResolveAssemblyReference.cache

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -40,13 +40,13 @@
             this.chkNegrita = new System.Windows.Forms.CheckBox();
             this.chkCursiva = new System.Windows.Forms.CheckBox();
             this.chkSubrayado = new System.Windows.Forms.CheckBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.button2 = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnCentrar = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.btnCentrar = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -60,7 +60,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.91248F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 87.08752F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 98F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 99F));
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.textBox1, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.button1, 2, 1);
@@ -92,14 +92,14 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.LightSeaGreen;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.LightSeaGreen;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
@@ -109,14 +109,15 @@
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+            this.dataGridView1.CurrentCellChanged += new System.EventHandler(this.dataGridView1_CurrentCellChanged);
             // 
             // textBox1
             // 
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(93, 66);
+            this.textBox1.Location = new System.Drawing.Point(92, 66);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(601, 26);
+            this.textBox1.Size = new System.Drawing.Size(600, 26);
             this.textBox1.TabIndex = 1;
             this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
@@ -124,9 +125,9 @@
             // button1
             // 
             this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button1.Location = new System.Drawing.Point(700, 66);
+            this.button1.Location = new System.Drawing.Point(698, 66);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(93, 22);
+            this.button1.Size = new System.Drawing.Size(95, 22);
             this.button1.TabIndex = 2;
             this.button1.Text = "ir";
             this.button1.UseVisualStyleBackColor = true;
@@ -140,7 +141,7 @@
             this.label1.Location = new System.Drawing.Point(20, 63);
             this.label1.Margin = new System.Windows.Forms.Padding(20, 0, 3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 28);
+            this.label1.Size = new System.Drawing.Size(66, 28);
             this.label1.TabIndex = 3;
             this.label1.Text = "ƒ(x)";
             // 
@@ -158,19 +159,19 @@
             this.tableLayoutPanel2.Controls.Add(this.chkSubrayado, 2, 1);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 4, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(90, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(89, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(607, 63);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(606, 63);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
             // numericUpDown1
             // 
             this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown1.Location = new System.Drawing.Point(98, 34);
+            this.numericUpDown1.Location = new System.Drawing.Point(96, 34);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             72,
@@ -218,7 +219,7 @@
             this.chkCursiva.Location = new System.Drawing.Point(31, 34);
             this.chkCursiva.Margin = new System.Windows.Forms.Padding(0);
             this.chkCursiva.Name = "chkCursiva";
-            this.chkCursiva.Size = new System.Drawing.Size(27, 29);
+            this.chkCursiva.Size = new System.Drawing.Size(26, 29);
             this.chkCursiva.TabIndex = 5;
             this.chkCursiva.Text = "K";
             this.chkCursiva.UseVisualStyleBackColor = true;
@@ -231,32 +232,14 @@
             this.chkSubrayado.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chkSubrayado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chkSubrayado.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkSubrayado.Location = new System.Drawing.Point(58, 34);
+            this.chkSubrayado.Location = new System.Drawing.Point(57, 34);
             this.chkSubrayado.Margin = new System.Windows.Forms.Padding(0);
             this.chkSubrayado.Name = "chkSubrayado";
-            this.chkSubrayado.Size = new System.Drawing.Size(30, 29);
+            this.chkSubrayado.Size = new System.Drawing.Size(29, 29);
             this.chkSubrayado.TabIndex = 6;
             this.chkSubrayado.Text = "S";
             this.chkSubrayado.UseVisualStyleBackColor = true;
             this.chkSubrayado.CheckedChanged += new System.EventHandler(this.btnSubrayada_Click);
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(3, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 7;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(132, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Color";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // tableLayoutPanel3
             // 
@@ -272,27 +255,27 @@
             this.tableLayoutPanel3.Controls.Add(this.comboBox1, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.button2, 1, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(149, 34);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(146, 34);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(458, 29);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(460, 29);
             this.tableLayoutPanel3.TabIndex = 9;
             // 
-            // btnCentrar
+            // button4
             // 
-            this.btnCentrar.Location = new System.Drawing.Point(220, 3);
-            this.btnCentrar.Name = "btnCentrar";
-            this.btnCentrar.Size = new System.Drawing.Size(72, 23);
-            this.btnCentrar.TabIndex = 9;
-            this.btnCentrar.Text = "Centrar";
-            this.btnCentrar.UseVisualStyleBackColor = true;
-            this.btnCentrar.Click += new System.EventHandler(this.btnCentrar_Click);
+            this.button4.Location = new System.Drawing.Point(367, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(72, 23);
+            this.button4.TabIndex = 11;
+            this.button4.Text = "Der";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(298, 3);
+            this.button3.Location = new System.Drawing.Point(300, 3);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(61, 23);
             this.button3.TabIndex = 10;
@@ -300,15 +283,33 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button4
+            // btnCentrar
             // 
-            this.button4.Location = new System.Drawing.Point(365, 3);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(72, 23);
-            this.button4.TabIndex = 11;
-            this.button4.Text = "Der";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnCentrar.Location = new System.Drawing.Point(222, 3);
+            this.btnCentrar.Name = "btnCentrar";
+            this.btnCentrar.Size = new System.Drawing.Size(72, 23);
+            this.btnCentrar.TabIndex = 9;
+            this.btnCentrar.Text = "Centrar";
+            this.btnCentrar.UseVisualStyleBackColor = true;
+            this.btnCentrar.Click += new System.EventHandler(this.btnCentrar_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(3, 3);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 7;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(134, 3);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "Color";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 

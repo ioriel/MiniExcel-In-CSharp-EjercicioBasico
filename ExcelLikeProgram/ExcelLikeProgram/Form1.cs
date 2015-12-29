@@ -172,16 +172,21 @@ namespace ExcelLikeProgram
         {
             
             double resultado = 0;
-            TextParser parser = new TextParser(this.Cells);
-
-            if (parser.Parse(this.textBox1.Text))
+            if (this.CanParseFormula(_formula))
             {
-                resultado = parser.Result;
-            }
-            else
-                MessageBox.Show("No se pudo analizar la formula Proporcionada");
+                TextParser parser = new TextParser(this.Cells);
 
-            this.editingFormula = false;
+                if (parser.Parse(this.textBox1.Text))
+                {
+                    resultado = parser.Result;
+                }
+                else
+                    MessageBox.Show("No se pudo analizar la formula Proporcionada");
+
+                this.editingFormula = false;
+            }
+            
+
             return resultado;
         }
 
@@ -220,10 +225,16 @@ namespace ExcelLikeProgram
             if (esFormula)
             {
                 //this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.Blue;
+                if (this.CanParseFormula(myCell.CurrentFormula))
+                {
+                    double res = this.ParseFormula(myCell.CurrentFormula);
+                    myCell.CurrentValue = res;
+                }
             }
 
-            double res = this.ParseFormula(myCell.CurrentFormula);
-            myCell.CurrentValue = res;
+            
+            
+
             this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = myCell.CurrentValue ;
 
             this.autoUpdatingCellValue = false;
@@ -565,6 +576,36 @@ namespace ExcelLikeProgram
             foreach (DataGridViewCell cell in this.dataGridView1.SelectedCells)
             {
                 cell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+        }
+
+        //actualizar info de celda
+        private void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
+        {
+            int ColumnIndex = this.dataGridView1.CurrentCellAddress.X;
+            int RowIndex = this.dataGridView1.CurrentCellAddress.Y;
+
+            if (RowIndex > 0 && ColumnIndex > 0)
+            {
+                this.textBox1.Clear();
+                if (this.dataGridView1.Rows[RowIndex].Cells[ColumnIndex].Value != null)
+                {
+                    object val = this.dataGridView1.Rows[RowIndex].Cells[ColumnIndex].Value;
+
+                    string currCell = this.GetCellKey(RowIndex, ColumnIndex);
+                    CellData myCell = this.Cells[currCell];
+                    if (!string.IsNullOrEmpty(myCell.CurrentFormula))
+                    {
+                        this.textBox1.Text = myCell.CurrentFormula;
+                    }
+                    else
+                    {
+                        //mostrar valor de la celda
+                        if (val != null)
+                            this.textBox1.Text = val.ToString();
+                    }
+
+                }
             }
         }
 
