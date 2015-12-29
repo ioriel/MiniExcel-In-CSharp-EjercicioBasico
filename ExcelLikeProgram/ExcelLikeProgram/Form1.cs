@@ -11,6 +11,8 @@ namespace ExcelLikeProgram
 {
     public partial class Form1 : Form
     {
+
+        private enum FONT_PROP { Bold , Italic , Underlined , changeSize};
         public Form1()
         {
             InitializeComponent();
@@ -19,6 +21,18 @@ namespace ExcelLikeProgram
         private void Form1_Load(object sender, EventArgs e)
         {
             this.InitDataGRid();
+            this.initComboBox();
+        }
+
+        private void initComboBox()
+        {
+            foreach (FontFamily font in System.Drawing.FontFamily.Families)
+            {
+                this.comboBox1.Items.Add(font.Name);
+            }
+
+            this.comboBox1.SelectedItem = "Microsoft Sans Serif";
+            
         }
 
         private Dictionary<string, CellData> Cells = new Dictionary<string, CellData>();//key = rowIndex+ColIndex , value = CellData definida en otra clase para guardar varios datos de la celda
@@ -187,7 +201,7 @@ namespace ExcelLikeProgram
                 //this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.Blue;
             }
 
-            this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = myCell.Id ;
+            this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = myCell.CurrentValue ;
         }
 
         //metodo para ejecucion de operacion en rango de columnas
@@ -282,5 +296,207 @@ namespace ExcelLikeProgram
                 this.ParseFormula(this.textBox1.Text);
             }
         }
+
+        #region apariencia de texto en celda
+
+        private void CambiarAparienciadeCeldasSeleccionadas(FONT_PROP _prop , bool _state)
+        {
+            if (this.dataGridView1.SelectedCells.Count > 0)
+            {
+                foreach (DataGridViewCell cell in this.dataGridView1.SelectedCells)
+                {
+                    int col = this.dataGridView1.CurrentCellAddress.X;//obtenemos coordenadas de celda seleccionada
+                    int row = this.dataGridView1.CurrentCellAddress.Y;
+
+                    //guardar el vlaor en celldata
+                    //falta validar el estado actual de la fuente
+                    //
+
+                    //cambiar el valor de la fuente de la celda
+                    //cell.Style.Font = _newFont;
+                    switch (_prop)
+	                {
+                        case FONT_PROP.Bold:
+                            {
+                                Font nf;
+
+                                if (_state)
+                                {
+                                    
+
+                                    if (this.chkCursiva.Checked)
+                                        if (this.chkSubrayado.Checked)
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Italic | FontStyle.Underline);
+                                        else
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Italic);
+                                    else
+                                        nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold);
+
+                                }
+                                else
+                                {
+                                    if (this.chkCursiva.Checked)
+                                        if (this.chkSubrayado.Checked)
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Regular | FontStyle.Italic | FontStyle.Underline);
+                                        else
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Regular | FontStyle.Italic);
+                                    else
+                                        nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Regular);
+                                }
+
+                                cell.Style.Font = nf;
+                            }
+                            break;
+                        case FONT_PROP.Italic:
+                            {
+                                Font nf;
+
+                                if (_state)
+                                {
+                                    if (this.chkNegrita.Checked)
+                                        if (this.chkSubrayado.Checked)
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Italic | FontStyle.Underline);
+                                        else
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Italic);
+                                    else
+                                        nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Italic);
+
+                                }
+                                else
+                                {
+                                    if (this.chkNegrita.Checked)
+                                        if (this.chkSubrayado.Checked)
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Underline);
+                                        else
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Regular);
+                                    else
+                                        nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Regular);
+                                }
+
+                                cell.Style.Font = nf;
+                            }
+                            break;
+                        case FONT_PROP.Underlined:
+                            {
+                                Font nf;
+
+                                if (_state)
+                                {
+                                    if (this.chkNegrita.Checked)
+                                        if (this.chkCursiva.Checked)
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Italic | FontStyle.Underline);
+                                        else
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Underline);
+                                    else
+                                        nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Underline);
+
+                                }
+                                else
+                                {
+                                    if (this.chkNegrita.Checked)
+                                        if (this.chkCursiva.Checked)
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Regular | FontStyle.Italic);
+                                        else
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Regular);
+                                    else
+                                        nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Regular);
+                                }
+
+                                cell.Style.Font = nf;
+                            }
+                            break;
+                        case FONT_PROP.changeSize:
+                            {
+                                Font nf;
+                                _state = this.chkSubrayado.Checked;
+                                if (_state)
+                                {
+                                    if (this.chkNegrita.Checked)
+                                        if (this.chkCursiva.Checked)
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Italic | FontStyle.Underline);
+                                        else
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Underline);
+                                    else
+                                        nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Underline);
+
+                                }
+                                else
+                                {
+                                    if (this.chkNegrita.Checked)
+                                        if (this.chkCursiva.Checked)
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Regular | FontStyle.Italic);
+                                        else
+                                            nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Bold | FontStyle.Regular);
+                                    else
+                                        nf = new System.Drawing.Font(this.comboBox1.SelectedItem.ToString(), (int)this.numericUpDown1.Value, FontStyle.Regular);
+                                }
+
+
+                                cell.Style.Font = nf;
+                            }
+                            break;
+                        default:
+                         break;
+	                }
+                    
+                    
+                }
+            }
+        }
+
+        //pone el contenido de la celda en negrita
+        private void btnNegrita_Click(object sender, EventArgs e)
+        {
+            //permite cambiar el tipo de fuente a negrita a toda la seleccion del grid
+            CheckBox chk = sender as CheckBox;
+            if (chk.Checked)
+            {
+                this.CambiarAparienciadeCeldasSeleccionadas(FONT_PROP.Bold, true);
+            }
+            else
+            {
+                this.CambiarAparienciadeCeldasSeleccionadas(FONT_PROP.Bold, false);
+            }
+           
+
+        }
+
+        private void btnCursiva_Click(object sender, EventArgs e)
+        {
+            CheckBox chk = sender as CheckBox;
+            if (chk.Checked)
+            {
+                this.CambiarAparienciadeCeldasSeleccionadas( FONT_PROP.Italic, true);
+            }
+            else
+            {
+                this.CambiarAparienciadeCeldasSeleccionadas(FONT_PROP.Italic, false);
+            }
+            
+        }
+
+        private void btnSubrayada_Click(object sender, EventArgs e)
+        {
+            CheckBox chk = sender as CheckBox;
+            if (chk.Checked)
+            {
+                this.CambiarAparienciadeCeldasSeleccionadas(FONT_PROP.Underlined, true);
+            }
+            else
+            {
+                this.CambiarAparienciadeCeldasSeleccionadas(FONT_PROP.Underlined, false);
+            }
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            this.CambiarAparienciadeCeldasSeleccionadas(FONT_PROP.changeSize ,true);
+            //this.CambiarAparienciadeCeldasSeleccionadas(new Font("Microsoft Sans Serif", (int)this.numericUpDown1.Value, FontStyle.Regular));
+        }
+
+        #endregion
+
+
+
     }
 }
