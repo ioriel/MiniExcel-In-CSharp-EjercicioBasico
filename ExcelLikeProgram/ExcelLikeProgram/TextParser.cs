@@ -55,7 +55,7 @@ namespace ExcelLikeProgram
     {
         public delegate void EventHandlerOnTextChange( object _sender , string _input);
         private enum Operaciones{Suma , Resta ,Multiplica ,Divide ,Potencia , Undef};
-
+        public enum OperationState { Correcta ,Pendiente, ErrorParametro , ErrorOperador ,ErrorSintaxis,ErrorDesconocido}
         public EventHandlerOnTextChange OnTextChange;
         
         public List<string> Functions;
@@ -63,6 +63,13 @@ namespace ExcelLikeProgram
         public List<string> Operands;
 
         public Queue<string> FullOperation;
+
+        //guarda el estado de la operacion
+        private OperationState estadoOperacion;
+        public OperationState EstadoOperacion 
+        {
+            get { return this.estadoOperacion; }
+        }
 
         private Dictionary<string, CellData> inputCells;
         public Dictionary<string,CellData> InputCells 
@@ -87,6 +94,7 @@ namespace ExcelLikeProgram
         {
             this.OnTextChange = null;
             this.inputCells = _cells;
+            this.estadoOperacion = OperationState.Pendiente;
         }
 
         //:( convierte el nombre de la celda Formato A2..z100 etc en coordenadas de la grilla
@@ -181,13 +189,8 @@ namespace ExcelLikeProgram
         {
             this.input = _input;
             bool flag = false;
-            // operando operador operando operador operando operador
+            bool isSingleReferenceOp;
 
-            //hallar la primera operacion analizando los parentesis -tokens
-            //analizar profundidad de la operacion((a+b) + e * (g/h) - 1 (((a+b)+(b-a))))) 
-            //
-            int levels=0;
-            int closedOps=0;
             //analizar consistencia de la formula -- Si tiene  sentido o si tiene algun error antes de
 
             //verificar consistencia de simbolos de agrupacion
@@ -213,12 +216,28 @@ namespace ExcelLikeProgram
                 {
                     replacement = this.inputCells[cellKey].CurrentValue.ToString();
                 }
+                else
+                    replacement = "0";
                 //reemplazar nombres de celdas por valores de celdas en la formula
                 replacedWithValues = regex.Replace(this.Input, replacement);
                 //buscar todos los valores de la formula
             }
+
+            //verificar si es operacion de redireccionamiento de celda y terminar parseo
+
+            if (this.singleReferenceOperation())
+            {
+                this.input = replacedWithValues;
+
+                this.estadoOperacion = OperationState.Correcta;
+                this.result = Double.Parse(this.Input.Substring(1,this.Input.Length-1));
+                return true;
+            }
+
             if(replaceables.Count > 0)
                 this.input = replacedWithValues;//cadena con vlaores de celdas
+
+            
 
             //regex 1 operacion binaria
             //^[=]+[(]?[0-9.0-9]+[\+]?[\-]?[\*]?[\/]?[\^]?[0-9.0-9]+[)]?
@@ -244,43 +263,34 @@ namespace ExcelLikeProgram
                     if (operador.Length > 0)
                     {
                         this.result = this.Eval(operandoA, operandoB, GetOperation(operador));
+                        this.estadoOperacion = OperationState.Correcta;
                         flag = true;
                     }
                     else
-                        MessageBox.Show("No hay operador");
+                        this.estadoOperacion = OperationState.ErrorOperador;
                 }
                 else
-                    MessageBox.Show("numero incorrecto de oepradores");
+                    this.estadoOperacion = OperationState.ErrorParametro;
             }
             else
-                MessageBox.Show("La operacion Solicitada no puede ser concretada");
+                this.estadoOperacion = OperationState.ErrorSintaxis;
 
             //^[=]?[(]*[0-9.0-9]+[\+]?[\-]?[\*]?[\/]?[\^]?[0-9.0-9]+[)]*
-            /*
-            foreach (char val in _input)
-            {
-                //buscar niveles de separacion de operaciones con ()
-
-                if (val == '(')
-                {
-                    levels++;
-                }
-                if (val == ')')
-                {
-                    closedOps++;
-                }
-            }
-            */
-
-
-
-
-            //si no hay niveles de jerarquia analizar operadores
-
             return flag;
         }
 
-      
+        //verifica si es una operacion de vlaidacion simpe
+        private bool singleReferenceOperation()
+        {
+            Match res = Regex.Match(this.input, "^[=]+[a-zA-Z]{1}[0-9]{1,3}$"); //regex de valor de celda
+            if (res.Length ==3)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        
 
         private int GetOperatorPrecedence(String token)
         {
